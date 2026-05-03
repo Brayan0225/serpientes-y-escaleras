@@ -199,28 +199,43 @@ function onDiceClick() {
 function handleMove(diceResult) {
     const player = players[currentPlayerIndex];
     let target = player.position + diceResult;
-    if (target > 20) target = 20 - (target - 20);
-    if (target < 1) target = 1;
 
-    animateToken(player, player.position, target, players, () => {
-        if (player.position === 20) { showVictory(player); return; }
+    if (target > 20) {
+        // Rebote: animar hasta 20, luego devolver
+        let bounceTarget = 20 - (target - 20);
+        if (bounceTarget < 1) bounceTarget = 1;
+        animateToken(player, player.position, 20, players, () => {
+            if (bounceTarget === 20) {
+                checkLanding(player);
+            } else {
+                animateToken(player, 20, bounceTarget, players, () => {
+                    checkLanding(player);
+                });
+            }
+        });
+    } else {
+        animateToken(player, player.position, target, players, () => {
+            checkLanding(player);
+        });
+    }
+}
 
-        // Verificar si cayo en base de escalera
-        const ladder = LADDERS.find(l => l.from === player.position);
-        if (ladder) {
-            showQuestion(player, 'ladder', ladder);
-            return;
-        }
+function checkLanding(player) {
+    if (player.position === 20) { showVictory(player); return; }
 
-        // Verificar si cayo en cabeza de serpiente
-        const snake = SNAKES.find(s => s.from === player.position);
-        if (snake) {
-            showQuestion(player, 'snake', snake);
-            return;
-        }
+    const ladder = LADDERS.find(l => l.from === player.position);
+    if (ladder) {
+        showQuestion(player, 'ladder', ladder);
+        return;
+    }
 
-        nextTurn();
-    });
+    const snake = SNAKES.find(s => s.from === player.position);
+    if (snake) {
+        showQuestion(player, 'snake', snake);
+        return;
+    }
+
+    nextTurn();
 }
 
 let questionTimer = null;

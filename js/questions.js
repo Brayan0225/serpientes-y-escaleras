@@ -309,6 +309,166 @@ const DEFAULT_QUESTIONS = [
         question: "¿Cómo se llama la esposa del Cid en el Cantar?",
         options: ["Leonor", "Urraca", "Doña Jimena", "Doña Sancha"],
         correct: 2
+    },
+    {
+        id: 41,
+        question: "¿Qué nombre recibe la segunda espada famosa del Cid?",
+        options: ["Colada", "Flamígera", "Lobera", "Nájera"],
+        correct: 0
+    },
+    {
+        id: 42,
+        question: "¿Qué infantes maltratan a las hijas del Cid en el Cantar?",
+        options: ["Los infantes de Lara", "Los infantes de Carrión", "Los infantes de Navarra", "Los infantes de Aragón"],
+        correct: 1
+    },
+    {
+        id: 43,
+        question: "¿Qué obra de Alfonso X el Sabio son poemas dedicados a la Virgen María escritos en gallego-portugués?",
+        options: ["Estoria de España", "Cantigas de Santa María", "Las Siete Partidas", "General Estoria"],
+        correct: 1
+    },
+    {
+        id: 44,
+        question: "¿Qué es un cantar de gesta?",
+        options: [
+            "Un poema lírico sobre el amor",
+            "Un poema narrativo extenso que relata las hazañas de un héroe",
+            "Una oración religiosa cantada",
+            "Un documento legal medieval"
+        ],
+        correct: 1
+    },
+    {
+        id: 45,
+        question: "¿En qué lugar fue desterrado el Cid por el rey Alfonso VI?",
+        options: [
+            "Fue expulsado del reino de Castilla",
+            "Fue enviado a Francia",
+            "Fue desterrado a Portugal",
+            "Fue encerrado en un monasterio"
+        ],
+        correct: 0
+    },
+    {
+        id: 46,
+        question: "¿Qué significa 'mester' en la expresión 'mester de juglaría'?",
+        options: ["Maestro", "Oficio o arte", "Ministerio", "Misterio"],
+        correct: 1
+    },
+    {
+        id: 47,
+        question: "¿Qué característica tiene el verso alejandrino?",
+        options: [
+            "Tiene 8 sílabas",
+            "Tiene 11 sílabas",
+            "Tiene 14 sílabas divididas en dos hemistiquios de 7",
+            "Tiene 16 sílabas"
+        ],
+        correct: 2
+    },
+    {
+        id: 48,
+        question: "¿Qué recurso literario usa el Cantar de Mio Cid al dirigirse directamente al público?",
+        options: ["Metáfora", "Apóstrofe", "Hipérbaton", "Epíteto épico"],
+        correct: 3
+    },
+    {
+        id: 49,
+        question: "¿Qué nombre recibe el tercer cantar del Poema de Mio Cid?",
+        options: ["Cantar del destierro", "Cantar de las bodas", "Cantar de la afrenta de Corpes", "Cantar de Valencia"],
+        correct: 2
+    },
+    {
+        id: 50,
+        question: "¿Qué obra medieval es considerada precursora de la novela picaresca?",
+        options: ["El Conde Lucanor", "Libro de Buen Amor", "La Celestina", "Cantar de Mio Cid"],
+        correct: 1
+    },
+    {
+        id: 51,
+        question: "¿Cuál es la principal diferencia entre romances viejos y romances nuevos?",
+        options: [
+            "Los viejos son anónimos y tradicionales; los nuevos son de autor conocido",
+            "Los viejos son más largos",
+            "Los nuevos son orales y los viejos escritos",
+            "No hay diferencia"
+        ],
+        correct: 0
+    },
+    {
+        id: 52,
+        question: "¿Qué personaje del Libro de Buen Amor es antecesora de Celestina?",
+        options: ["Doña Endrina", "Trotaconventos", "Doña Garoza", "Doña Cuaresma"],
+        correct: 1
+    },
+    {
+        id: 53,
+        question: "¿Qué tipo de prosa cultivó Don Juan Manuel en El Conde Lucanor?",
+        options: ["Prosa histórica", "Prosa didáctica y de ficción", "Prosa jurídica", "Prosa religiosa"],
+        correct: 1
+    },
+    {
+        id: 54,
+        question: "¿Qué siglo se considera el inicio de la literatura castellana escrita?",
+        options: ["Siglo VIII", "Siglo X", "Siglo XII", "Siglo XV"],
+        correct: 2
+    },
+    {
+        id: 55,
+        question: "¿Qué batalla ganó el Cid incluso después de muerto, según la leyenda?",
+        options: ["Batalla de las Navas de Tolosa", "Batalla de Valencia", "Batalla de Covadonga", "Batalla de Roncesvalles"],
+        correct: 1
+    },
+    {
+        id: 56,
+        question: "¿Qué son las 'Coplas a la muerte de su padre' y quién las escribió?",
+        options: [
+            "Un cantar de gesta de autor anónimo",
+            "Un poema elegíaco de Jorge Manrique",
+            "Una obra teatral de Fernando de Rojas",
+            "Un tratado de Alfonso X"
+        ],
+        correct: 1
+    },
+    {
+        id: 57,
+        question: "¿Qué movimiento literario del siglo XV español se caracteriza por la poesía cortesana y los cancioneros?",
+        options: ["Renacimiento", "Prerrenacimiento", "Barroco", "Romanticismo"],
+        correct: 1
+    },
+    {
+        id: 58,
+        question: "¿Qué es la 'Danza de la Muerte' en la literatura medieval?",
+        options: [
+            "Una fiesta popular",
+            "Un género literario donde la Muerte invita a bailar a personas de todos los estamentos sociales",
+            "Un ritual religioso",
+            "Un tipo de torneo medieval"
+        ],
+        correct: 1
+    },
+    {
+        id: 59,
+        question: "¿Qué papel cumple el personaje de Patronio en El Conde Lucanor?",
+        options: [
+            "Es el villano de la historia",
+            "Es un caballero guerrero",
+            "Es el consejero sabio que responde con cuentos ejemplares",
+            "Es el rey que juzga al conde"
+        ],
+        correct: 2
+    },
+    {
+        id: 60,
+        question: "¿Qué caracteriza al 'amor cortés' en la literatura medieval?",
+        options: [
+            "El caballero venera a una dama inalcanzable con devoción casi religiosa",
+            "Los matrimonios arreglados por los padres",
+            "El amor entre personas del pueblo llano",
+            "Las relaciones comerciales entre nobles"
+        ],
+        correct: 0
     }
 ];
 
