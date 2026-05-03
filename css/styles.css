@@ -531,9 +531,15 @@ body {
 .btn-rules { border-color:#8e24aa; }
 .btn-rules:hover { background:#8e24aa; border-color:#8e24aa; color:white; }
 
-/* Boton log */
-.btn-log { border-color:#26a69a; }
-.btn-log:hover { background:#26a69a; border-color:#26a69a; color:white; }
+/* Botones extras en inicio */
+.start-extras { display:flex; gap:0.6rem; justify-content:center; margin-top:1.2rem; flex-wrap:wrap; }
+.btn-extra {
+    font-family:'Nunito'; font-weight:700; font-size:0.85rem; padding:0.45rem 1rem;
+    background:white; color:#555; border:2px solid var(--pink); border-radius:12px;
+    cursor:pointer; transition:all 0.2s;
+}
+.btn-extra:hover { background:#e91e63; color:white; border-color:#e91e63; transform:translateY(-1px); }
+.edit-hint { font-size:0.75rem; color:#999; margin-top:0.6rem; font-style:italic; }
 
 /* Log de participacion */
 .log-container { max-height:350px; overflow-y:auto; text-align:left; }

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serpientes y Escaleras - Literatura Medieval Española</title>
     <link rel="stylesheet" href="lib/sweetalert2.min.css">
-    <link rel="stylesheet" href="css/styles.css?v=7">
+    <link rel="stylesheet" href="css/styles.css?v=8">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -42,6 +42,12 @@
                 <div id="player-inputs"></div>
 
                 <button id="btn-start" class="btn-start">Iniciar Juego</button>
+
+                <div class="start-extras">
+                    <button id="btn-edit-questions" class="btn-extra">&#9998; Editar Preguntas</button>
+                    <button id="btn-log" class="btn-extra">&#128196; Ver Participacion</button>
+                </div>
+                <p class="edit-hint">* Las ediciones de preguntas son temporales (solo este navegador)</p>
             </div>
             <div class="checkered-border bottom-border"></div>
         </div>
@@ -124,8 +130,6 @@
 
                 <div class="sidebar-buttons">
                     <button id="btn-rules" class="btn-sidebar btn-rules">&#128203; Como Jugar?</button>
-                    <button id="btn-edit-questions" class="btn-sidebar">&#9998; Editar Preguntas</button>
-                    <button id="btn-log" class="btn-sidebar btn-log">&#128196; Ver Participacion</button>
                     <button class="btn-sidebar btn-back" onclick="restartGame()">&#8617; Volver al Inicio</button>
                 </div>
             </div>
@@ -140,6 +144,6 @@
     <script src="js/questions.js?v=6"></script>
     <script src="js/dice.js?v=7"></script>
     <script src="js/board.js?v=6"></script>
-    <script src="js/game.js?v=7"></script>
+    <script src="js/game.js?v=8"></script>
 </body>
 </html>
