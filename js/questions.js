@@ -472,8 +472,20 @@ const DEFAULT_QUESTIONS = [
     }
 ];
 
+const QUESTIONS_VERSION = 2; // Incrementar al agregar preguntas nuevas
+
 function loadQuestions() {
+    const storedVersion = localStorage.getItem('snl_questions_version');
     const stored = localStorage.getItem('snl_questions');
+
+    // Si la version cambio, actualizar con las nuevas preguntas
+    if (!storedVersion || parseInt(storedVersion) < QUESTIONS_VERSION) {
+        // Guardar las nuevas preguntas y la version
+        saveQuestions(DEFAULT_QUESTIONS);
+        localStorage.setItem('snl_questions_version', QUESTIONS_VERSION);
+        return [...DEFAULT_QUESTIONS];
+    }
+
     if (stored) {
         return JSON.parse(stored);
     }

@@ -38,7 +38,7 @@ function rollDice(callback) {
 
     // Efecto de rebote al terminar
     setTimeout(() => {
-        scene.style.pointerEvents = 'auto';
+        // NO re-habilitar pointerEvents aqui - enableDice() lo hace cuando el turno termina
         // Pequeno rebote final
         cube.style.transition = 'transform 0.15s ease';
         const finalRotation = DICE_ROTATIONS[result];

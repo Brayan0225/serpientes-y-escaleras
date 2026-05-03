@@ -83,7 +83,16 @@ function createBoard(container) {
             drawSnakesAndLadders();
         });
     });
+
+    // Redibujar al redimensionar ventana
+    window.removeEventListener('resize', _resizeHandler);
+    _resizeHandler = () => { clearTimeout(_resizeTimer); _resizeTimer = setTimeout(drawSnakesAndLadders, 200); };
+    window.addEventListener('resize', _resizeHandler);
 }
+
+let _resizeHandler = null;
+let _resizeTimer = null;
+
 
 function getCellCenter(cellNum) {
     const board = document.getElementById('board');
@@ -319,6 +328,7 @@ function updateTokenIndicators(players) {
 }
 
 function animateToken(player, from, to, players, callback) {
+    if (from === to) { callback(); return; }
     const step = from < to ? 1 : -1;
     let current = from;
 
