@@ -1,12 +1,12 @@
 // Dado 3D animado
 // Rotaciones para mostrar cada cara del cubo
 const DICE_ROTATIONS = {
-    1: 'rotateX(0deg) rotateY(0deg)',       // front
-    2: 'rotateX(90deg) rotateY(0deg)',      // bottom
-    3: 'rotateY(90deg) rotateX(0deg)',      // right
-    4: 'rotateY(-90deg) rotateX(0deg)',     // left
-    5: 'rotateX(-90deg) rotateY(0deg)',     // top
-    6: 'rotateX(180deg) rotateY(0deg)'      // back
+    1: 'rotateX(0deg) rotateY(0deg)',       // front = 1 punto
+    2: 'rotateX(90deg) rotateY(0deg)',      // bottom = 2 puntos
+    3: 'rotateY(-90deg) rotateX(0deg)',     // right = 3 puntos
+    4: 'rotateY(90deg) rotateX(0deg)',      // left = 4 puntos
+    5: 'rotateX(-90deg) rotateY(0deg)',     // top = 5 puntos
+    6: 'rotateX(180deg) rotateY(0deg)'      // back = 6 puntos
 };
 
 function rollDice(callback) {
