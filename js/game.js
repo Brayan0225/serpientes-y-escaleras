@@ -442,9 +442,20 @@ function showGameLog() {
         if (r.isDenied) downloadLog(logs);
         if (r.dismiss === Swal.DismissReason.cancel) {
             Swal.fire({
-                title: 'Borrar historial?', icon: 'warning', showCancelButton: true,
-                confirmButtonText: 'Si', cancelButtonText: 'No',
-                customClass: { popup: 'medieval-popup', title: 'medieval-title' }
+                title: 'Ingresa la clave para borrar',
+                input: 'password',
+                inputPlaceholder: 'Clave...',
+                showCancelButton: true,
+                confirmButtonText: 'Borrar',
+                cancelButtonText: 'Cancelar',
+                customClass: { popup: 'medieval-popup', title: 'medieval-title' },
+                preConfirm: (val) => {
+                    if (val !== 'lidys10') {
+                        Swal.showValidationMessage('Clave incorrecta');
+                        return false;
+                    }
+                    return true;
+                }
             }).then(c => { if (c.isConfirmed) { localStorage.removeItem('snl_game_log'); } });
         }
     });
