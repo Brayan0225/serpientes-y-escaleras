@@ -7,6 +7,27 @@ function getAudioCtx() {
     return audioCtx;
 }
 
+// Activar audio en movil al primer toque del usuario
+function unlockAudio() {
+    const ctx = getAudioCtx();
+    if (ctx.state === 'suspended') {
+        ctx.resume();
+    }
+    // Reproducir un sonido silencioso para desbloquear
+    const buf = ctx.createBuffer(1, 1, ctx.sampleRate);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    // Remover listeners despues de desbloquear
+    document.removeEventListener('touchstart', unlockAudio);
+    document.removeEventListener('touchend', unlockAudio);
+    document.removeEventListener('click', unlockAudio);
+}
+document.addEventListener('touchstart', unlockAudio, { once: false });
+document.addEventListener('touchend', unlockAudio, { once: false });
+document.addEventListener('click', unlockAudio, { once: false });
+
 function playSound(type) {
     try {
         const ctx = getAudioCtx();
