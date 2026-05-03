@@ -189,6 +189,7 @@ function onDiceClick() {
     if (!gameActive) return;
     disableDice();
     playSound('dice');
+    playSound('diceRoll');
     rollDice((result) => {
         document.getElementById('dice-hint').textContent = `Resultado: ${result}`;
         handleMove(result);

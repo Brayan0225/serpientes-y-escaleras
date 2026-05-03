@@ -14,6 +14,7 @@ function playSound(type) {
 
         switch (type) {
             case 'dice': playDiceSound(ctx); break;
+            case 'diceRoll': playDiceRollSound(ctx); break;
             case 'move': playMoveSound(ctx); break;
             case 'correct': playCorrectSound(ctx); break;
             case 'incorrect': playIncorrectSound(ctx); break;
@@ -27,22 +28,49 @@ function playSound(type) {
 }
 
 function playDiceSound(ctx) {
-    // Sonido de dado rodando - ruido corto con filtro
-    const duration = 0.4;
+    // Click inicial al tocar el dado
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 800;
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(); osc.stop(ctx.currentTime + 0.1);
+}
+
+function playDiceRollSound(ctx) {
+    // Sonido largo de dado rodando - 1.2 segundos de ruido con rebotes
+    const duration = 1.2;
     const bufferSize = ctx.sampleRate * duration;
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
+
+    // Simular rebotes del dado en la mesa
+    const bounces = [0, 0.15, 0.3, 0.5, 0.7, 0.85, 1.0];
     for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 2);
+        const t = i / ctx.sampleRate;
+        const progress = t / duration;
+        // Volumen que decrece con cada rebote
+        let envelope = Math.pow(1 - progress, 1.5);
+        // Agregar picos en cada rebote
+        bounces.forEach(b => {
+            const dist = Math.abs(t - b * duration);
+            if (dist < 0.04) {
+                envelope += (0.04 - dist) * 25 * (1 - b);
+            }
+        });
+        data[i] = (Math.random() * 2 - 1) * envelope;
     }
+
     const source = ctx.createBufferSource();
     source.buffer = buffer;
     const filter = ctx.createBiquadFilter();
     filter.type = 'bandpass';
-    filter.frequency.value = 800;
-    filter.Q.value = 2;
+    filter.frequency.value = 1200;
+    filter.Q.value = 1.5;
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.setValueAtTime(0.6, ctx.currentTime);
     source.connect(filter).connect(gain).connect(ctx.destination);
     source.start();
 }
@@ -53,10 +81,10 @@ function playMoveSound(ctx) {
     osc.type = 'sine';
     osc.frequency.setValueAtTime(600, ctx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(900, ctx.currentTime + 0.08);
-    gain.gain.setValueAtTime(0.1, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.4, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
     osc.connect(gain).connect(ctx.destination);
-    osc.start(); osc.stop(ctx.currentTime + 0.1);
+    osc.start(); osc.stop(ctx.currentTime + 0.12);
 }
 
 function playCorrectSound(ctx) {
@@ -66,11 +94,11 @@ function playCorrectSound(ctx) {
         osc.type = 'sine';
         osc.frequency.value = freq;
         gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.12);
-        gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + i * 0.12 + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.3);
+        gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + i * 0.12 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.12 + 0.35);
         osc.connect(gain).connect(ctx.destination);
         osc.start(ctx.currentTime + i * 0.12);
-        osc.stop(ctx.currentTime + i * 0.12 + 0.3);
+        osc.stop(ctx.currentTime + i * 0.12 + 0.35);
     });
 }
 
@@ -80,40 +108,38 @@ function playIncorrectSound(ctx) {
         const gain = ctx.createGain();
         osc.type = 'square';
         osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.08, ctx.currentTime + i * 0.2);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.2 + 0.25);
+        gain.gain.setValueAtTime(0.35, ctx.currentTime + i * 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.2 + 0.3);
         osc.connect(gain).connect(ctx.destination);
         osc.start(ctx.currentTime + i * 0.2);
-        osc.stop(ctx.currentTime + i * 0.2 + 0.25);
+        osc.stop(ctx.currentTime + i * 0.2 + 0.3);
     });
 }
 
 function playLadderSound(ctx) {
-    // Sonido ascendente alegre
     [440, 554, 659, 880].forEach((freq, i) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
         osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.12, ctx.currentTime + i * 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.2);
+        gain.gain.setValueAtTime(0.45, ctx.currentTime + i * 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.25);
         osc.connect(gain).connect(ctx.destination);
         osc.start(ctx.currentTime + i * 0.1);
-        osc.stop(ctx.currentTime + i * 0.1 + 0.2);
+        osc.stop(ctx.currentTime + i * 0.1 + 0.25);
     });
 }
 
 function playSnakeSound(ctx) {
-    // Sonido descendente triste
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(600, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.6);
-    gain.gain.setValueAtTime(0.08, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.7);
+    gain.gain.setValueAtTime(0.35, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.7);
     osc.connect(gain).connect(ctx.destination);
-    osc.start(); osc.stop(ctx.currentTime + 0.6);
+    osc.start(); osc.stop(ctx.currentTime + 0.7);
 }
 
 function playVictorySound(ctx) {
@@ -125,11 +151,11 @@ function playVictorySound(ctx) {
         osc.frequency.value = freq;
         const t = ctx.currentTime + i * 0.15;
         gain.gain.setValueAtTime(0, t);
-        gain.gain.linearRampToValueAtTime(0.15, t + 0.02);
-        gain.gain.setValueAtTime(0.15, t + 0.1);
-        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        gain.gain.linearRampToValueAtTime(0.5, t + 0.02);
+        gain.gain.setValueAtTime(0.5, t + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
         osc.connect(gain).connect(ctx.destination);
-        osc.start(t); osc.stop(t + 0.3);
+        osc.start(t); osc.stop(t + 0.35);
     });
 }
 
@@ -138,10 +164,10 @@ function playTickSound(ctx) {
     const gain = ctx.createGain();
     osc.type = 'sine';
     osc.frequency.value = 1000;
-    gain.gain.setValueAtTime(0.06, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
     osc.connect(gain).connect(ctx.destination);
-    osc.start(); osc.stop(ctx.currentTime + 0.05);
+    osc.start(); osc.stop(ctx.currentTime + 0.06);
 }
 
 function playTimeoutSound(ctx) {
@@ -150,11 +176,11 @@ function playTimeoutSound(ctx) {
         const gain = ctx.createGain();
         osc.type = 'square';
         osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.1, ctx.currentTime + i * 0.15);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.2);
+        gain.gain.setValueAtTime(0.4, ctx.currentTime + i * 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.15 + 0.25);
         osc.connect(gain).connect(ctx.destination);
         osc.start(ctx.currentTime + i * 0.15);
-        osc.stop(ctx.currentTime + i * 0.15 + 0.2);
+        osc.stop(ctx.currentTime + i * 0.15 + 0.25);
     });
 }
 
