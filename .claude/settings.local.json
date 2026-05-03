@@ -16,7 +16,8 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git remote:*)",
-      "WebFetch(domain:serpientes-y-escaleras.vercel.app)"
+      "WebFetch(domain:serpientes-y-escaleras.vercel.app)",
+      "Bash(git push:*)"
     ]
   }
 }

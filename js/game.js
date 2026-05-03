@@ -6,7 +6,22 @@ let usedQuestionIds = [];
 
 const PLAYER_EMOJIS = ['🦁', '🦋', '🌸', '🐱', '🦄', '🐶', '🌟', '🎀', '🐰', '🍀', '🔥', '💎'];
 const PLAYER_COLORS = ['#4caf50', '#2196f3', '#ffc107', '#f44336'];
+const COLOR_OPTIONS = [
+    { name: 'Verde', color: '#4caf50' },
+    { name: 'Azul', color: '#2196f3' },
+    { name: 'Amarillo', color: '#ffc107' },
+    { name: 'Rojo', color: '#f44336' },
+    { name: 'Rosa', color: '#e91e63' },
+    { name: 'Morado', color: '#9c27b0' },
+    { name: 'Naranja', color: '#ff9800' },
+    { name: 'Cyan', color: '#00bcd4' },
+    { name: 'Lima', color: '#8bc34a' },
+    { name: 'Indigo', color: '#3f51b5' },
+    { name: 'Coral', color: '#ff6f61' },
+    { name: 'Turquesa', color: '#26a69a' }
+];
 const DEFAULT_EMOJIS = ['🦁', '🦋', '🌸', '🐱'];
+let playerColors = [...PLAYER_COLORS];
 
 // Popup de bienvenida
 function showWelcome() {
@@ -40,13 +55,14 @@ function updatePlayerInputs() {
     const container = document.getElementById('player-inputs');
 
     container.innerHTML = '';
+    playerColors = PLAYER_COLORS.slice(0, count);
     for (let i = 0; i < count; i++) {
         const div = document.createElement('div');
         div.className = 'player-input-row';
         div.innerHTML = `
             <button type="button" class="player-emoji-btn" id="emoji-btn-${i}" onclick="pickEmoji(${i})">${DEFAULT_EMOJIS[i]}</button>
             <input type="text" id="player-name-${i}" placeholder="Jugador ${i + 1}" maxlength="15">
-            <div class="color-badge" style="background:${PLAYER_COLORS[i]}"></div>
+            <div class="color-badge" id="color-btn-${i}" style="background:${playerColors[i]};cursor:pointer;" onclick="pickColor(${i})"></div>
         `;
         container.appendChild(div);
     }
@@ -73,6 +89,28 @@ function pickEmoji(playerIndex) {
     });
 }
 
+function pickColor(playerIndex) {
+    const grid = COLOR_OPTIONS.map(c =>
+        `<button class="color-pick" data-color="${c.color}" style="background:${c.color}" title="${c.name}"></button>`
+    ).join('');
+
+    Swal.fire({
+        title: 'Elige tu color',
+        html: `<div class="color-picker-grid">${grid}</div>`,
+        showConfirmButton: false,
+        customClass: { popup: 'medieval-popup', title: 'medieval-title' },
+        didOpen: () => {
+            Swal.getPopup().querySelectorAll('.color-pick').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    playerColors[playerIndex] = btn.dataset.color;
+                    document.getElementById(`color-btn-${playerIndex}`).style.background = btn.dataset.color;
+                    Swal.close();
+                });
+            });
+        }
+    });
+}
+
 function startGame() {
     const count = parseInt(document.getElementById('player-count').value);
     players = [];
@@ -81,7 +119,7 @@ function startGame() {
         const emoji = document.getElementById(`emoji-btn-${i}`).textContent;
         players.push({
             name: input.value.trim() || `Jugador ${i + 1}`,
-            color: PLAYER_COLORS[i],
+            color: playerColors[i],
             emoji: emoji,
             position: 1,
             correct: 0,

@@ -431,6 +431,17 @@ body {
 }
 .emoji-pick:hover { border-color:#e91e63; transform:scale(1.15); background:#fce4ec; }
 
+/* ===== COLOR PICKER ===== */
+.color-picker-grid {
+    display:grid; grid-template-columns:repeat(6, 1fr); gap:10px; padding:0.5rem;
+}
+.color-pick {
+    width:44px; height:44px; border-radius:50%; border:3px solid rgba(255,255,255,0.8);
+    cursor:pointer; transition:all 0.2s;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.2), inset 0 -3px 5px rgba(0,0,0,0.15), inset 0 3px 5px rgba(255,255,255,0.5);
+}
+.color-pick:hover { transform:scale(1.2); border-color:#333; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+
 /* ===== SWEETALERT ===== */
 .medieval-popup {
     background:white !important; border:3px solid var(--pink) !important;
