@@ -28,51 +28,74 @@ function playSound(type) {
 }
 
 function playDiceSound(ctx) {
-    // Click inicial al tocar el dado
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.value = 800;
-    gain.gain.setValueAtTime(0.5, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
-    osc.connect(gain).connect(ctx.destination);
-    osc.start(); osc.stop(ctx.currentTime + 0.1);
+    // No hace nada, el sonido principal es diceRoll
 }
 
 function playDiceRollSound(ctx) {
-    // Sonido largo de dado rodando - 1.2 segundos de ruido con rebotes
-    const duration = 1.2;
-    const bufferSize = ctx.sampleRate * duration;
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
+    // Simular dado cayendo y rebotando en mesa de madera
+    // Varios golpes secos que se van haciendo mas rapidos y suaves
+    const hits = [
+        { time: 0,    vol: 0.7, freq: 180, dur: 0.08 },
+        { time: 0.12, vol: 0.6, freq: 220, dur: 0.06 },
+        { time: 0.22, vol: 0.5, freq: 250, dur: 0.05 },
+        { time: 0.30, vol: 0.4, freq: 280, dur: 0.04 },
+        { time: 0.36, vol: 0.35, freq: 300, dur: 0.035 },
+        { time: 0.41, vol: 0.3, freq: 320, dur: 0.03 },
+        { time: 0.45, vol: 0.25, freq: 340, dur: 0.025 },
+        { time: 0.48, vol: 0.2, freq: 360, dur: 0.02 },
+        { time: 0.50, vol: 0.15, freq: 380, dur: 0.02 },
+    ];
 
-    // Simular rebotes del dado en la mesa
-    const bounces = [0, 0.15, 0.3, 0.5, 0.7, 0.85, 1.0];
-    for (let i = 0; i < bufferSize; i++) {
+    hits.forEach(h => {
+        // Golpe seco (ruido filtrado)
+        const bufLen = Math.floor(ctx.sampleRate * h.dur);
+        const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < bufLen; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 3);
+        }
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        const filt = ctx.createBiquadFilter();
+        filt.type = 'lowpass';
+        filt.frequency.value = h.freq;
+        filt.Q.value = 5;
+        const g = ctx.createGain();
+        g.gain.setValueAtTime(h.vol, ctx.currentTime + h.time);
+        src.connect(filt).connect(g).connect(ctx.destination);
+        src.start(ctx.currentTime + h.time);
+
+        // Tono corto de impacto
+        const osc = ctx.createOscillator();
+        const og = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = h.freq * 2;
+        og.gain.setValueAtTime(h.vol * 0.4, ctx.currentTime + h.time);
+        og.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + h.time + h.dur);
+        osc.connect(og).connect(ctx.destination);
+        osc.start(ctx.currentTime + h.time);
+        osc.stop(ctx.currentTime + h.time + h.dur);
+    });
+
+    // Rodamiento entre rebotes
+    const rollDur = 0.55;
+    const rollBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * rollDur), ctx.sampleRate);
+    const rollData = rollBuf.getChannelData(0);
+    for (let i = 0; i < rollData.length; i++) {
         const t = i / ctx.sampleRate;
-        const progress = t / duration;
-        // Volumen que decrece con cada rebote
-        let envelope = Math.pow(1 - progress, 1.5);
-        // Agregar picos en cada rebote
-        bounces.forEach(b => {
-            const dist = Math.abs(t - b * duration);
-            if (dist < 0.04) {
-                envelope += (0.04 - dist) * 25 * (1 - b);
-            }
-        });
-        data[i] = (Math.random() * 2 - 1) * envelope;
+        const env = Math.sin(t / rollDur * Math.PI) * 0.3;
+        rollData[i] = (Math.random() * 2 - 1) * env;
     }
-
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 1200;
-    filter.Q.value = 1.5;
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.6, ctx.currentTime);
-    source.connect(filter).connect(gain).connect(ctx.destination);
-    source.start();
+    const rollSrc = ctx.createBufferSource();
+    rollSrc.buffer = rollBuf;
+    const rollFilt = ctx.createBiquadFilter();
+    rollFilt.type = 'bandpass';
+    rollFilt.frequency.value = 600;
+    rollFilt.Q.value = 3;
+    const rollGain = ctx.createGain();
+    rollGain.gain.setValueAtTime(0.35, ctx.currentTime);
+    rollSrc.connect(rollFilt).connect(rollGain).connect(ctx.destination);
+    rollSrc.start(ctx.currentTime);
 }
 
 function playMoveSound(ctx) {
