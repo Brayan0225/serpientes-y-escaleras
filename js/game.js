@@ -382,10 +382,107 @@ function nextTurn() {
     enableDice();
 }
 
+function saveGameLog(winner) {
+    const logs = JSON.parse(localStorage.getItem('snl_game_log') || '[]');
+    const now = new Date();
+    logs.push({
+        fecha: now.toLocaleDateString('es-CO', { year:'numeric', month:'2-digit', day:'2-digit' }),
+        hora: now.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' }),
+        ganador: winner.name,
+        jugadores: players.map(p => ({
+            nombre: p.name,
+            emoji: p.emoji,
+            correctas: p.correct,
+            incorrectas: p.incorrect,
+            ganador: p === winner
+        }))
+    });
+    localStorage.setItem('snl_game_log', JSON.stringify(logs));
+}
+
+function showGameLog() {
+    const logs = JSON.parse(localStorage.getItem('snl_game_log') || '[]');
+
+    if (logs.length === 0) {
+        Swal.fire({
+            title: 'Historial de Participacion',
+            html: '<p>No hay partidas registradas aun.</p>',
+            confirmButtonText: 'Cerrar',
+            customClass: { popup: 'medieval-popup', title: 'medieval-title' }
+        });
+        return;
+    }
+
+    let html = '<div class="log-container">';
+    logs.forEach((log, i) => {
+        html += `<div class="log-entry">
+            <div class="log-header">Partida ${i + 1} - ${log.fecha} ${log.hora}</div>
+            <div class="log-players">`;
+        log.jugadores.forEach(j => {
+            html += `<div class="log-player ${j.ganador ? 'log-winner' : ''}">
+                <span>${j.ganador ? '\uD83C\uDFC6 ' : ''}${j.emoji} ${j.nombre}</span>
+                <span>\u2714${j.correctas} \u2718${j.incorrectas}</span>
+            </div>`;
+        });
+        html += '</div></div>';
+    });
+    html += '</div>';
+
+    Swal.fire({
+        title: '\uD83D\uDCC4 Historial de Participacion',
+        html: html,
+        confirmButtonText: 'Cerrar',
+        showDenyButton: true,
+        denyButtonText: 'Descargar TXT',
+        showCancelButton: true,
+        cancelButtonText: 'Borrar Historial',
+        width: '650px',
+        customClass: { popup: 'medieval-popup', title: 'medieval-title' }
+    }).then(r => {
+        if (r.isDenied) downloadLog(logs);
+        if (r.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire({
+                title: 'Borrar historial?', icon: 'warning', showCancelButton: true,
+                confirmButtonText: 'Si', cancelButtonText: 'No',
+                customClass: { popup: 'medieval-popup', title: 'medieval-title' }
+            }).then(c => { if (c.isConfirmed) { localStorage.removeItem('snl_game_log'); } });
+        }
+    });
+}
+
+function downloadLog(logs) {
+    let txt = '==========================================\n';
+    txt += '  SERPIENTES Y ESCALERAS - LOG DE PARTICIPACION\n';
+    txt += '  Literatura Medieval Espanola\n';
+    txt += '  Estudiante: Lidys Esther Marquez Torres - Grado 10\n';
+    txt += '==========================================\n\n';
+
+    logs.forEach((log, i) => {
+        txt += `--- Partida ${i + 1} | ${log.fecha} ${log.hora} ---\n`;
+        txt += `Ganador: ${log.ganador}\n`;
+        log.jugadores.forEach(j => {
+            txt += `  ${j.ganador ? '[GANADOR] ' : ''}${j.nombre}: ${j.correctas} correctas, ${j.incorrectas} incorrectas\n`;
+        });
+        txt += '\n';
+    });
+
+    txt += `==========================================\n`;
+    txt += `Total de partidas: ${logs.length}\n`;
+    txt += `Generado: ${new Date().toLocaleString('es-CO')}\n`;
+
+    const blob = new Blob([txt], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'participacion_serpientes_escaleras.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+}
+
 function showVictory(winner) {
     gameActive = false;
     playSound('victory');
     launchConfetti();
+    saveGameLog(winner);
 
     let stats = '<div class="victory-stats">';
     players.forEach(p => {
@@ -524,4 +621,5 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('dice-scene').addEventListener('click', onDiceClick);
     document.getElementById('btn-edit-questions').addEventListener('click', openQuestionEditor);
     document.getElementById('btn-rules').addEventListener('click', showRules);
+    document.getElementById('btn-log').addEventListener('click', showGameLog);
 });
