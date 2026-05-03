@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js\" -o /Users/mimac/Documents/Juego/lib/sweetalert2.min.js && wc -c /Users/mimac/Documents/Juego/lib/sweetalert2.min.js)",
+      "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css\" -o /Users/mimac/Documents/Juego/lib/sweetalert2.min.css && wc -c /Users/mimac/Documents/Juego/lib/sweetalert2.min.css)",
+      "Bash(curl -sL \"https://fonts.googleapis.com/css2?family=MedievalSharp&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap\" -H \"User-Agent: Mozilla/5.0\" -o /tmp/fonts.css)",
+      "Read(//tmp/**)",
+      "Bash(curl -sL \"https://fonts.gstatic.com/s/crimsontext/v19/wlpogwHKFkZgtmSR3NB0oRJfaghW.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/CrimsonText-Italic.ttf\" && curl -sL \"https://fonts.gstatic.com/s/crimsontext/v19/wlp2gwHKFkZgtmSR3NB0oRJvaA.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/CrimsonText-Regular.ttf\" && curl -sL \"https://fonts.gstatic.com/s/crimsontext/v19/wlppgwHKFkZgtmSR3NB0oRJXsCx2Cw.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/CrimsonText-SemiBold.ttf\" && curl -sL \"https://fonts.gstatic.com/s/medievalsharp/v28/EvOJzAlL3oU5AQl2mP5KdgptAq8.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/MedievalSharp-Regular.ttf\" && ls -la /Users/mimac/Documents/Juego/fonts/)",
+      "Bash(curl -sL \"https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap\" -H \"User-Agent: Mozilla/5.0\" -o /tmp/nunito.css && cat /tmp/nunito.css)",
+      "Bash(curl -sL \"https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDLshRTM.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/Nunito-Regular.ttf\" && curl -sL \"https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDGUmRTM.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/Nunito-SemiBold.ttf\" && curl -sL \"https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDFwmRTM.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/Nunito-Bold.ttf\" && curl -sL \"https://fonts.gstatic.com/s/nunito/v32/XRXI3I6Li01BKofiOc5wtlZ2di8HDDsmRTM.ttf\" -o \"/Users/mimac/Documents/Juego/fonts/Nunito-ExtraBold.ttf\" && echo \"OK\")",
+      "Bash(curl -sL \"https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap\" -H \"User-Agent: Mozilla/5.0\" -o /tmp/fredoka.css && cat /tmp/fredoka.css)",
+      "Bash(wc -l js/*.js css/styles.css)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote:*)",
+      "WebFetch(domain:serpientes-y-escaleras.vercel.app)"
+    ]
+  }
+}

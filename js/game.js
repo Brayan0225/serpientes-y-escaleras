@@ -161,6 +161,7 @@ function handleMove(diceResult) {
     const player = players[currentPlayerIndex];
     let target = player.position + diceResult;
     if (target > 20) target = 20 - (target - 20);
+    if (target < 1) target = 1;
 
     animateToken(player, player.position, target, players, () => {
         if (player.position === 20) { showVictory(player); return; }
