@@ -450,7 +450,7 @@ function showGameLog() {
                 cancelButtonText: 'Cancelar',
                 customClass: { popup: 'medieval-popup', title: 'medieval-title' },
                 preConfirm: (val) => {
-                    if (val !== 'lidys10') {
+                    if (val !== 'brayansierra') {
                         Swal.showValidationMessage('Clave incorrecta');
                         return false;
                     }
